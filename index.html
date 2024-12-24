@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salon Menu</title>
+    <style>
+        /* Prevent Text Selection */
+        * {
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version */
+        }
+
+        /* Body styling */
+        body {
+            background: #1a1a2e; /* Deep Navy Blue */
+            color: #d4d4d4; /* Soft White */
+            overflow-x: hidden;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            font-size: 18px;
+        }
+
+        .container {
+            text-align: center;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 900px;
+            margin-top: 20px;
+        }
+
+        h1 {
+            font-size: 48px;
+            color: #d4af37; /* Gold */
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .menu-section {
+            margin-bottom: 40px;
+            cursor: pointer;
+        }
+
+        .menu-section h2 {
+            font-size: 32px;
+            color: #d4af37; /* Gold */
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            position: relative;
+            display: inline-block;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #d4af37;
+        }
+
+        .menu-section h2::after {
+            content: "";
+            width: 50px;
+            height: 2px;
+            background: #d4af37;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .service-list {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+            margin-top: 20px;
+            display: none; /* Initially hidden */
+        }
+
+        .service-item {
+            padding: 20px;
+            background: #333; /* Dark Gray */
+            border-radius: 10px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+        }
+
+        .service-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            background-color: #444; /* Slightly lighter gray */
+        }
+
+        .service-item h3 {
+            font-size: 24px;
+            color: #d4af37; /* Gold */
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .price {
+            font-size: 22px;
+            color: #2ecc71; /* Emerald Green */
+            font-weight: bold;
+        }
+
+        /* Package Service Styles */
+        .package-section {
+            background-color: #2a2a38; /* Darker Background for Package */
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            margin-top: 40px;
+            display: none; /* Initially hidden */
+        }
+
+        .package-section h2 {
+            color: #d4af37; /* Gold */
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .package-list {
+            text-align: left;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .package-item {
+            font-size: 22px;
+            color: #d4d4d4; /* Soft White */
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
+        }
+
+        .package-summary {
+            font-size: 24px;
+            color: #d4af37; /* Gold */
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .discounted-price {
+            font-size: 26px;
+            color: #ff6347; /* Tomato Red */
+            font-weight: bold;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+
+        .package-item:last-child {
+            border-bottom: none; /* No bottom border on the last item */
+        }
+
+        .package-item:hover {
+            background-color: #444;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+        }
+
+        /* Animations */
+        .menu-section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s forwards;
+        }
+
+        .menu-section:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .menu-section:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .menu-section:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .service-list {
+                grid-template-columns: 1fr;
+            }
+
+            h1 {
+                font-size: 36px;
+            }
+
+            .service-item {
+                padding: 15px;
+            }
+
+            .menu-section h2 {
+                font-size: 28px;
+            }
+
+            .package-summary, .discounted-price {
+                font-size: 20px;
+            }
+
+            .package-item {
+                font-size: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Salon Menu</h1>
+
+    <!-- Hair Services Section -->
+    <div class="menu-section" id="hairServices">
+        <h2>Hair Services</h2>
+        <div class="service-list">
+            <div class="service-item">
+                <h3>Haircut</h3>
+                <p class="price">₹2490</p>
+            </div>
+            <div class="service-item">
+                <h3>Shampoo & Style</h3>
+                <p class="price">₹3735</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Facial Treatments Section -->
+    <div class="menu-section" id="facialTreatments">
+        <h2>Facial Treatments</h2>
+        <div class="service-list">
+            <div class="service-item">
+                <h3>Basic Facial</h3>
+                <p class="price">₹4980</p>
+            </div>
+            <div class="service-item">
+                <h3>Anti-Aging Facial</h3>
+                <p class="price">₹8300</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nail Services Section -->
+    <div class="menu-section" id="nailServices">
+        <h2>Nail Services</h2>
+        <div class="service-list">
+            <div class="service-item">
+                <h3>Manicure</h3>
+                <p class="price">₹2075</p>
+            </div>
+            <div class="service-item">
+                <h3>Pedicure</h3>
+                <p class="price">₹2905</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Package Services Section (Initially hidden) -->
+    <div class="menu-section" id="packageServices">
+        <h2>Package Services</h2>
+        <div class="package-section" id="packageDetails">
+            <div class="package-list">
+                <div class="package-item">
+                    <span>Haircut</span><span>₹2490</span>
+                </div>
+                <div class="package-item">
+                    <span>Shampoo & Style</span><span>₹3735</span>
+                </div>
+                <div class="package-item">
+                    <span>Basic Facial</span><span>₹4980</span>
+                </div>
+                <div class="package-item">
+                    <span>Anti-Aging Facial</span><span>₹8300</span>
+                </div>
+                <div class="package-item">
+                    <span>Manicure</span><span>₹2075</span>
+                </div>
+                <div class="package-item">
+                    <span>Pedicure</span><span>₹2905</span>
+                </div>
+            </div>
+
+            <div class="package-summary">
+                Total Price: ₹24,485
+            </div>
+            
+            <div class="package-summary">
+                Discount (30%): ₹7,345.50
+            </div>
+
+            <div class="discounted-price">
+                Discounted Price: ₹17,139.50
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<script>
+    // Function to toggle the visibility of the menu section
+    function toggleMenu(sectionId) {
+        const section = document.getElementById(sectionId);
+        const serviceList = section.querySelector('.service-list');
+        if (serviceList.style.display === 'none' || serviceList.style.display === '') {
+            serviceList.style.display = 'grid';  // Show the section
+        } else {
+            serviceList.style.display = 'none';  // Hide the section
+        }
+    }
+
+    // Function to toggle Package Services visibility
+    function togglePackageServices() {
+        const packageSection = document.getElementById('packageDetails');
+        if (packageSection.style.display === 'none' || packageSection.style.display === '') {
+            packageSection.style.display = 'block'; // Show the package details
+        } else {
+            packageSection.style.display = 'none'; // Hide the package details
+        }
+    }
+
+    // Add event listeners to sections
+    document.getElementById('hairServices').addEventListener('click', function() {
+        toggleMenu('hairServices');
+    });
+
+    document.getElementById('facialTreatments').addEventListener('click', function() {
+        toggleMenu('facialTreatments');
+    });
+
+    document.getElementById('nailServices').addEventListener('click', function() {
+        toggleMenu('nailServices');
+    });
+
+    // Event listener for Package Services click
+    document.getElementById('packageServices').addEventListener('click', function() {
+        togglePackageServices();
+    });
+
+    // Disable right-click context menu
+    document.addEventListener("contextmenu", function(event) {
+        event.preventDefault();  // Disable the context menu
+        alert("Screenshotting is disabled on this page.");
+    });
+</script>
+
+</body>
+</html>

@@ -14,6 +14,7 @@
             color: #fff;
             overflow: hidden;
             transition: background-color 0.5s ease;
+            position: relative;
         }
 
         .container {
@@ -110,6 +111,18 @@
             display: none;
         }
 
+        /* Overlay to block the page when screenshot is detected */
+        .screenshot-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            z-index: 9999;
+            display: none;
+        }
+
         /* Responsive Design */
         @media (max-width: 768px) {
             .service-list {
@@ -140,6 +153,9 @@
     </style>
 </head>
 <body>
+
+<!-- Overlay for screenshot blocking -->
+<div id="screenshotOverlay" class="screenshot-overlay"></div>
 
 <div class="container">
     <h1>Salon Menu</h1>
@@ -267,10 +283,12 @@
     // Detect if the tab goes out of view or visibility is changed (possible screenshot attempt)
     document.addEventListener('visibilitychange', function() {
         if (document.hidden) {
-            document.body.style.backgroundColor = 'white';  // Turn the screen white when detected
+            const overlay = document.getElementById('screenshotOverlay');
+            overlay.style.display = 'block';  // Show the white overlay
             alert("Screenshot detected! Details are hidden.");
         } else {
-            document.body.style.backgroundColor = '#1a1a2e';  // Restore background
+            const overlay = document.getElementById('screenshotOverlay');
+            overlay.style.display = 'none';  // Hide the white overlay
         }
     });
 </script>

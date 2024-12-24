@@ -5,122 +5,197 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Salon Menu</title>
     <style>
-        /* Global Styles */
+        /* Prevent Text Selection */
+        * {
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version */
+        }
+
+        /* Body styling */
         body {
-            font-family: 'Arial', sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #1a1a2e; /* Dark theme */
-            color: #fff;
-            overflow: hidden;
-            transition: background-color 0.5s ease;
-            position: relative;
+            background: #1a1a2e; /* Deep Navy Blue */
+            color: #d4d4d4; /* Soft White */
+            overflow-x: hidden;
+            overflow-y: auto;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            padding: 20px;
+            font-size: 18px;
         }
 
         .container {
-            padding: 30px;
             text-align: center;
-            transition: transform 0.5s ease;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 900px;
+            margin-top: 20px;
         }
 
         h1 {
             font-size: 48px;
-            color: #d4af37; /* Gold color */
+            color: #d4af37; /* Gold */
             margin-bottom: 30px;
+            text-transform: uppercase;
             letter-spacing: 2px;
         }
 
         .menu-section {
             margin-bottom: 40px;
             cursor: pointer;
-            transition: background 0.3s ease;
         }
 
         .menu-section h2 {
             font-size: 32px;
-            color: #d4af37;
+            color: #d4af37; /* Gold */
+            margin-bottom: 20px;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            position: relative;
+            display: inline-block;
             padding-bottom: 10px;
             border-bottom: 3px solid #d4af37;
+        }
+
+        .menu-section h2::after {
+            content: "";
+            width: 50px;
+            height: 2px;
+            background: #d4af37;
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
         }
 
         .service-list {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
+            gap: 30px;
             margin-top: 20px;
-            display: none;
+            display: none; /* Initially hidden */
         }
 
         .service-item {
-            background-color: #333;
-            padding: 15px;
+            padding: 20px;
+            background: #333; /* Dark Gray */
             border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s, box-shadow 0.3s, background-color 0.3s;
+        }
+
+        .service-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.4);
+            background-color: #444; /* Slightly lighter gray */
         }
 
         .service-item h3 {
-            font-size: 22px;
+            font-size: 24px;
             color: #d4af37; /* Gold */
             margin-bottom: 10px;
+            text-transform: uppercase;
         }
 
         .price {
-            font-size: 20px;
-            color: #2ecc71; /* Green */
+            font-size: 22px;
+            color: #2ecc71; /* Emerald Green */
             font-weight: bold;
         }
 
         /* Package Service Styles */
         .package-section {
-            background-color: #2a2a38;
+            background-color: #2a2a38; /* Darker Background for Package */
             padding: 30px;
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             margin-top: 40px;
-            display: none;
+            display: none; /* Initially hidden */
+        }
+
+        .package-section h2 {
+            color: #d4af37; /* Gold */
+            font-size: 36px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .package-list {
+            text-align: left;
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
         }
 
         .package-item {
             font-size: 22px;
-            color: #fff;
+            color: #d4d4d4; /* Soft White */
+            font-weight: 600;
             display: flex;
             justify-content: space-between;
-            margin-bottom: 10px;
+            border-bottom: 1px solid #444;
+            padding-bottom: 10px;
         }
 
-        .package-summary, .discounted-price {
+        .package-summary {
             font-size: 24px;
-            color: #d4af37;
+            color: #d4af37; /* Gold */
+            font-weight: bold;
             margin-top: 20px;
         }
 
+        .discounted-price {
+            font-size: 26px;
+            color: #ff6347; /* Tomato Red */
+            font-weight: bold;
+            margin-top: 20px;
+            letter-spacing: 1px;
+        }
+
         .package-item:last-child {
-            margin-bottom: 0;
+            border-bottom: none; /* No bottom border on the last item */
         }
 
         .package-item:hover {
             background-color: #444;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
         }
 
-        /* Hidden package section */
-        #packageDetails {
-            display: none;
+        /* Animations */
+        .menu-section {
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 1s forwards;
         }
 
-        /* Overlay to block the page when screenshot is detected */
-        .screenshot-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: white;
-            z-index: 9999;
-            display: none;
+        .menu-section:nth-child(1) {
+            animation-delay: 0.2s;
+        }
+
+        .menu-section:nth-child(2) {
+            animation-delay: 0.4s;
+        }
+
+        .menu-section:nth-child(3) {
+            animation-delay: 0.6s;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
         /* Responsive Design */
@@ -134,7 +209,7 @@
             }
 
             .service-item {
-                padding: 10px;
+                padding: 15px;
             }
 
             .menu-section h2 {
@@ -146,16 +221,12 @@
             }
 
             .package-item {
-                font-size: 18px;
+                font-size: 20px;
             }
         }
-
     </style>
 </head>
 <body>
-
-<!-- Overlay for screenshot blocking -->
-<div id="screenshotOverlay" class="screenshot-overlay"></div>
 
 <div class="container">
     <h1>Salon Menu</h1>
@@ -205,39 +276,45 @@
         </div>
     </div>
 
-    <!-- Package Services Section -->
+    <!-- Package Services Section (Initially hidden) -->
     <div class="menu-section" id="packageServices">
         <h2>Package Services</h2>
         <div class="package-section" id="packageDetails">
-            <div class="package-item">
-                <span>Haircut</span><span>₹2490</span>
+            <div class="package-list">
+                <div class="package-item">
+                    <span>Haircut</span><span>₹2490</span>
+                </div>
+                <div class="package-item">
+                    <span>Shampoo & Style</span><span>₹3735</span>
+                </div>
+                <div class="package-item">
+                    <span>Basic Facial</span><span>₹4980</span>
+                </div>
+                <div class="package-item">
+                    <span>Anti-Aging Facial</span><span>₹8300</span>
+                </div>
+                <div class="package-item">
+                    <span>Manicure</span><span>₹2075</span>
+                </div>
+                <div class="package-item">
+                    <span>Pedicure</span><span>₹2905</span>
+                </div>
             </div>
-            <div class="package-item">
-                <span>Shampoo & Style</span><span>₹3735</span>
-            </div>
-            <div class="package-item">
-                <span>Basic Facial</span><span>₹4980</span>
-            </div>
-            <div class="package-item">
-                <span>Anti-Aging Facial</span><span>₹8300</span>
-            </div>
-            <div class="package-item">
-                <span>Manicure</span><span>₹2075</span>
-            </div>
-            <div class="package-item">
-                <span>Pedicure</span><span>₹2905</span>
-            </div>
+
             <div class="package-summary">
                 Total Price: ₹24,485
             </div>
+            
             <div class="package-summary">
                 Discount (30%): ₹7,345.50
             </div>
+
             <div class="discounted-price">
                 Discounted Price: ₹17,139.50
             </div>
         </div>
     </div>
+
 </div>
 
 <script>
@@ -280,18 +357,8 @@
         togglePackageServices();
     });
 
-    // Detect if the tab goes out of view or visibility is changed (possible screenshot attempt)
-    document.addEventListener('visibilitychange', function() {
-        if (document.hidden) {
-            const overlay = document.getElementById('screenshotOverlay');
-            overlay.style.display = 'block';  // Show the white overlay
-            alert("Screenshot detected! Details are hidden.");
-        } else {
-            const overlay = document.getElementById('screenshotOverlay');
-            overlay.style.display = 'none';  // Hide the white overlay
-        }
-    });
 </script>
 
 </body>
 </html>
+
